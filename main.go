@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"natsas-place/config"
+	"natsas-place/database"
 	"natsas-place/routes"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,6 +14,9 @@ import (
 func main() {
 	// loading environment variables
 	config.GetConfig()
+
+	// connect to database
+	database.ConnectBD()
 
 	// initialize fiber
 	app := fiber.New(fiber.Config{
