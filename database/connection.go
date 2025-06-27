@@ -20,5 +20,7 @@ func ConnectBD() {
 		log.Fatal("Error connecting to database")
 	}
 
+	createtMigration(db)
+
 	DB = db
 }
