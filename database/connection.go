@@ -8,19 +8,19 @@ import (
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+var Instance *gorm.DB
 
 func ConnectBD() {
 
-	database_url := config.GetConfig().Database_url
+	databaseUrl := config.GetConfig().DatabaseUrl
 
-	db, err := gorm.Open(postgres.Open(database_url), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(databaseUrl), &gorm.Config{})
 
 	if err != nil {
 		log.Fatal("Error connecting to database")
 	}
 
-	createtMigration(db)
+	createdMigration(db)
 
-	DB = db
+	Instance = db
 }

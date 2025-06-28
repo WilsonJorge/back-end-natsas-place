@@ -6,12 +6,39 @@ import (
 	"gorm.io/gorm"
 )
 
-func createtMigration(dbInstance *gorm.DB) {
-	dbInstance.AutoMigrate(&models.User{})
-	dbInstance.AutoMigrate(&models.Property{})
-	dbInstance.AutoMigrate(&models.PropertyImage{})
-	dbInstance.AutoMigrate(&models.Favorite{})
-	dbInstance.AutoMigrate(&models.Visit{})
-	dbInstance.AutoMigrate(&models.Review{})
-	dbInstance.AutoMigrate(&models.Address{})
+func createdMigration(dbInstance *gorm.DB) {
+	err := dbInstance.AutoMigrate(&models.User{})
+	if err != nil {
+		return
+	}
+
+	err = dbInstance.AutoMigrate(&models.Property{})
+	if err != nil {
+		return
+	}
+
+	err = dbInstance.AutoMigrate(&models.PropertyImage{})
+	if err != nil {
+		return
+	}
+	
+	err = dbInstance.AutoMigrate(&models.Favorite{})
+	if err != nil {
+		return
+	}
+
+	err = dbInstance.AutoMigrate(&models.Visit{})
+	if err != nil {
+		return
+	}
+
+	err = dbInstance.AutoMigrate(&models.Review{})
+	if err != nil {
+		return
+	}
+
+	err = dbInstance.AutoMigrate(&models.Address{})
+	if err != nil {
+		return
+	}
 }

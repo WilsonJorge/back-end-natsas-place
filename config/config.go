@@ -9,7 +9,7 @@ import (
 )
 
 type Config struct {
-	Database_url string
+	DatabaseUrl string
 }
 
 var (
@@ -31,10 +31,10 @@ func Init() *Config {
 	}
 
 	config := &Config{
-		Database_url: os.Getenv("DATABASE_URL"),
+		DatabaseUrl: os.Getenv("DATABASE_URL"),
 	}
 
-	if config.Database_url == "" {
+	if config.DatabaseUrl == "" {
 		log.Fatal("DATABASE_URL não encontrada nas variáveis de ambiente")
 	}
 

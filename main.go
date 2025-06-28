@@ -27,9 +27,7 @@ func main() {
 	app.Use(logger.New())
 	app.Use(cors.New())
 
-	// Setup das rotas
 	routes.Setup(app)
 
-	// Inicia o servidor
 	log.Fatal(app.Listen(":3001"))
 }
