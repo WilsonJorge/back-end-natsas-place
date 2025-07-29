@@ -1,21 +1,20 @@
 package controllers
 
 import (
-	"net/http"
 	"strconv"
 
 	"natsas-place/middleware"
 	"natsas-place/models"
-	"natsas-place/repository"
+
 	user_service "natsas-place/services/user"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetAllUsers retorna todos os usuários (admin only)
 func GetAllUsers(c *fiber.Ctx) error {
-	users, err := repository.GetAllUsers()
+	var users []models.User
+	users, err := user_service.GetAllUsersService()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   true,
@@ -23,36 +22,12 @@ func GetAllUsers(c *fiber.Ctx) error {
 		})
 	}
 
-	// Converter para UserResponse
-	var userResponses []models.UserResponse
-	for _, user := range users {
-		userResponse := models.UserResponse{
-			ID:              user.ID,
-			Name:            user.Name,
-			Email:           user.Email,
-			Phone:           user.Phone,
-			Role:            user.Role,
-			IsVerified:      user.IsVerified,
-			IsActive:        user.IsActive,
-			ProfileImage:    user.ProfileImage,
-			Gender:          user.Gender,
-			Nationality:     user.Nationality,
-			Language:        user.Language,
-			EmailVerifiedAt: user.EmailVerifiedAt,
-			LastLoginAt:     user.LastLoginAt,
-			CreatedAt:       user.CreatedAt,
-			UpdatedAt:       user.UpdatedAt,
-		}
-		userResponses = append(userResponses, userResponse)
-	}
-
-	return c.Status(http.StatusOK).JSON(fiber.Map{
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "success",
-		"data":   userResponses,
+		"data":   users,
 	})
 }
 
-// GetUserById retorna um usuário específico pelo ID (admin only)
 func GetUserById(c *fiber.Ctx) error {
 	id := c.Params("id")
 
@@ -64,28 +39,9 @@ func GetUserById(c *fiber.Ctx) error {
 		})
 	}
 
-	// Converter para UserResponse
-	userResponse := models.UserResponse{
-		ID:              user.ID,
-		Name:            user.Name,
-		Email:           user.Email,
-		Phone:           user.Phone,
-		Role:            user.Role,
-		IsVerified:      user.IsVerified,
-		IsActive:        user.IsActive,
-		ProfileImage:    user.ProfileImage,
-		Gender:          user.Gender,
-		Nationality:     user.Nationality,
-		Language:        user.Language,
-		EmailVerifiedAt: user.EmailVerifiedAt,
-		LastLoginAt:     user.LastLoginAt,
-		CreatedAt:       user.CreatedAt,
-		UpdatedAt:       user.UpdatedAt,
-	}
-
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status": "success",
-		"data":   userResponse,
+		"data":   user,
 	})
 }
 
@@ -126,15 +82,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	if input.Phone != "" {
 		user.Phone = input.Phone
 	}
-	if input.Gender != "" {
-		user.Gender = input.Gender
-	}
-	if input.Nationality != "" {
-		user.Nationality = input.Nationality
-	}
-	if input.Language != "" {
-		user.Language = input.Language
-	}
+
 	if input.ProfileImage != "" {
 		user.ProfileImage = input.ProfileImage
 	}
@@ -149,21 +97,17 @@ func UpdateUser(c *fiber.Ctx) error {
 	}
 
 	userResponse := models.UserResponse{
-		ID:              user.ID,
-		Name:            user.Name,
-		Email:           user.Email,
-		Phone:           user.Phone,
-		Role:            user.Role,
-		IsVerified:      user.IsVerified,
-		IsActive:        user.IsActive,
-		ProfileImage:    user.ProfileImage,
-		Gender:          user.Gender,
-		Nationality:     user.Nationality,
-		Language:        user.Language,
-		EmailVerifiedAt: user.EmailVerifiedAt,
-		LastLoginAt:     user.LastLoginAt,
-		CreatedAt:       user.CreatedAt,
-		UpdatedAt:       user.UpdatedAt,
+		ID:           user.ID,
+		Name:         user.Name,
+		Email:        user.Email,
+		Phone:        user.Phone,
+		Role:         user.Role,
+		IsVerified:   user.IsVerified,
+		IsActive:     user.IsActive,
+		ProfileImage: user.ProfileImage,
+		LastLoginAt:  user.LastLoginAt,
+		CreatedAt:    user.CreatedAt,
+		UpdatedAt:    user.UpdatedAt,
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{

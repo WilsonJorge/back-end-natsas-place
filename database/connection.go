@@ -20,7 +20,14 @@ func ConnectBD() {
 		log.Fatal("Error connecting to database")
 	}
 
-	createdMigration(db)
+	// Only run migrations if explicitly enabled
+	if config.GetConfig().RunMigrations {
+		log.Println("🔄 Running database migrations...")
+		createdMigration(db)
+		log.Println("✅ Database migrations completed")
+	} else {
+		log.Println("⏭️ Skipping database migrations (RUN_MIGRATIONS=false)")
+	}
 
 	Instance = db
 }

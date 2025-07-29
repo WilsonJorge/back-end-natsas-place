@@ -24,6 +24,7 @@ type Config struct {
 	BackendURL         string
 	Environment        string
 	Port               string
+	RunMigrations      bool
 }
 
 var (
@@ -56,10 +57,11 @@ func Init() *Config {
 		// MailgunAPIKey:      os.Getenv("MAILGUN_API_KEY"),
 		// StripeSecretKey:    os.Getenv("STRIPE_SECRET_KEY"),
 		// StripePublicKey:    os.Getenv("STRIPE_PUBLIC_KEY"),
-		FrontendURL: os.Getenv("FRONTEND_URL"),
-		BackendURL:  os.Getenv("BACKEND_URL"),
-		Environment: os.Getenv("ENVIRONMENT"),
-		Port:        os.Getenv("PORT"),
+		FrontendURL:   os.Getenv("FRONTEND_URL"),
+		BackendURL:    os.Getenv("BACKEND_URL"),
+		Environment:   os.Getenv("ENVIRONMENT"),
+		Port:          os.Getenv("PORT"),
+		RunMigrations: os.Getenv("RUN_MIGRATIONS") == "true",
 	}
 
 	if config.DatabaseUrl == "" {

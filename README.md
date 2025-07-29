@@ -105,10 +105,14 @@ cp .env.example .env
 # Edite o arquivo .env com suas configurações
 ```
 
-4. Execute as migrações:
+4. Execute a aplicação:
 
 ```bash
+# Para executar sem migrações (padrão)
 go run main.go
+
+# Para executar com migrações
+RUN_MIGRATIONS=true go run main.go
 ```
 
 ## Variáveis de Ambiente
@@ -125,6 +129,11 @@ PORT=3001
 ENVIRONMENT=development
 FRONTEND_URL=http://localhost:3000
 BACKEND_URL=http://localhost:3001
+
+# Database Migrations (set to "true" to run migrations on startup)
+RUN_MIGRATIONS=false
+
+> **Nota sobre Migrações**: Por padrão, as migrações não são executadas automaticamente. Para executar as migrações, defina `RUN_MIGRATIONS=true` no seu arquivo `.env` ou execute a aplicação com a variável de ambiente: `RUN_MIGRATIONS=true go run main.go`
 
 # Email Configuration
 EMAIL_SENDER=noreply@natsasplace.com

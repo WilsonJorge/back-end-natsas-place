@@ -2,12 +2,13 @@ package user
 
 import (
 	"fmt"
+	"natsas-place/database"
 	"natsas-place/models"
-	"natsas-place/repository"
 )
 
 func CreateUserService(userData models.User) (models.User, error) {
-	userExited, err := repository.GetUserByEmail(userData.Email)
+	var userExited models.User
+	err := database.Instance.Where("email = ?", userData.Email).First(&userExited).Error
 	if err != nil {
 		return models.User{}, fmt.Errorf("THIS USER ALREADY EXISTED")
 	}
@@ -16,7 +17,7 @@ func CreateUserService(userData models.User) (models.User, error) {
 		return models.User{}, fmt.Errorf("THIS USER ALREADY EXISTED")
 	}
 
-	_, err = repository.CreateUser(userData)
+	err = database.Instance.Create(&userData).Error
 	if err != nil {
 		return models.User{}, fmt.Errorf("USER CREATE FAILED")
 	}
@@ -24,21 +25,22 @@ func CreateUserService(userData models.User) (models.User, error) {
 }
 
 func UpdateUser(userData models.User) (models.User, error) {
-	user, err := repository.GetUserByID(userData.ID)
+	var user models.User
+	err := database.Instance.Where("id = ?", userData.ID).First(&user).Error
 	if err != nil {
 		return user, err
 	}
 	user.Name = userData.Name
 	user.Email = userData.Email
 	user.Phone = userData.Phone
-	user.DateOfBirth = userData.DateOfBirth
+
 	if err != nil {
 		return user, err
 	}
 
 	user.ProfileImage = userData.ProfileImage
 
-	_, err = repository.UpdateUser(user)
+	err = database.Instance.Save(&user).Error
 	if err != nil {
 		return user, err
 	}
@@ -47,7 +49,7 @@ func UpdateUser(userData models.User) (models.User, error) {
 }
 
 func DeleteUser(id string) error {
-	err := repository.DeleteUserById(id)
+	err := database.Instance.Delete(&models.User{}, id).Error
 	if err != nil {
 		return fmt.Errorf("ERROR WHEN DELETE USER %w", err)
 	}
@@ -56,7 +58,8 @@ func DeleteUser(id string) error {
 }
 
 func GetUserById(id string) (models.User, error) {
-	user, err := repository.GetUserByID(id)
+	var user models.User
+	err := database.Instance.Where("id = ?", id).First(&user).Error
 
 	if err != nil {
 		return models.User{}, fmt.Errorf("ERROR WHEN GET USER %w", err)
@@ -66,9 +69,10 @@ func GetUserById(id string) (models.User, error) {
 }
 
 func GetAllUsersService() ([]models.User, error) {
-	userData, err := repository.GetAllUsers()
+	var users []models.User
+	err := database.Instance.Find(&users).Error
 	if err != nil {
 		return []models.User{}, fmt.Errorf("ERROR WHEN GET USER %w", err)
 	}
-	return userData, nil
+	return users, nil
 }

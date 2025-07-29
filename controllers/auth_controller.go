@@ -3,7 +3,6 @@ package controllers
 import (
 	"natsas-place/models"
 	"natsas-place/services/auth"
-	"natsas-place/utils"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -31,16 +30,8 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	// Validação da força da senha
-	if err := utils.ValidatePasswordStrength(input.Password); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error":   true,
-			"message": err.Error(),
-		})
-	}
-
 	// Registrar usuário
-	user, authResponse, err := auth.RegisterUser(input)
+	_, err := auth.RegisterUser(input)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error":   true,
@@ -50,8 +41,6 @@ func Register(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"message": "User registered successfully",
-		"user":    user,
-		"auth":    authResponse,
 	})
 }
 
