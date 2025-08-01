@@ -17,9 +17,7 @@ func main() {
 
 	cfg := config.GetConfig()
 
-
 	database.ConnectBD()
-
 
 	app := fiber.New(fiber.Config{
 		AppName:               "Natsa's Place API",

@@ -8,7 +8,7 @@ import (
 
 func createdMigration(dbInstance *gorm.DB) {
 	// User model
-	err := dbInstance.AutoMigrate(&models.User{})
+	err := dbInstance.AutoMigrate(&models.User{}, &models.Property{}, &models.PropertyImage{}, &models.BookedPeriod{}, &models.Review{})
 	if err != nil {
 		return
 	}

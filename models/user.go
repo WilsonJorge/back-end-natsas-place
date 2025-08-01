@@ -20,6 +20,10 @@ type User struct {
 	CreatedAt    time.Time  `json:"created_at"`
 	UpdatedAt    time.Time  `json:"updated_at"`
 
+	Properties    []Property     `json:"properties" gorm:"foreignKey:OwnerID"`
+	BookedPeriods []BookedPeriod `json:"booked_periods" gorm:"foreignKey:GuestID"`
+	Reviews       []Review       `json:"reviews" gorm:"foreignKey:ReviewerID"`
+
 	// Relationships
 	// Bookings      []Booking      `json:"bookings" gorm:"foreignKey:UserID"`
 	// Reviews       []Review       `json:"reviews" gorm:"foreignKey:ReviewerID"`

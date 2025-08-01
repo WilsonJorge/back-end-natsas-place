@@ -15,7 +15,6 @@ func ConnectBD() {
 	databaseUrl := config.GetConfig().DatabaseUrl
 
 	db, err := gorm.Open(postgres.Open(databaseUrl), &gorm.Config{})
-
 	if err != nil {
 		log.Fatal("Error connecting to database")
 	}
